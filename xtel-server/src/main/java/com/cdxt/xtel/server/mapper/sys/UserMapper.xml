@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdxt.xtel.server.mapper.sys.UserDao">
+
+	<resultMap id="userinfoMap" type="userInfo">
+		<id property="userName" column="USERNAME" />
+		<id property="userId" column="USERID" />
+		<result property="nickName" column="NICKNAME" />
+		<result property="groupId" column="GROUPID" />
+		<result property="registTime" column="REGISTTIME" />
+		<result property="purchasedCourse" column="PURCHASEDCOURSE" />
+		<result property="passCourse" column="PASSCOURSE" />
+		<result property="excellentCourse" column="EXCELLENTCOURSE" />
+		<result property="learningCourse" column="LEARNINGCOURSE" />
+		<result property="lectures" column="LECTURES" />
+		<result property="isOnline" column="ISONLINE" />
+		<result property="loginTime" column="LOGINTIME" />
+		<result property="password" column="PASSWORD" />
+		<result property="status" column="STATUS" />
+
+	</resultMap>
+
+	<!-- 通过登录名查询userInfo -->
+	<select id="getUserInfoByLoginName" parameterType="String"
+		resultMap="userinfoMap">
+		select * from XTEL_USERINFOTABLE where USERNAME=#{loginName}
+	</select>
+
+	<!-- 动态更新userInfo -->
+	<update id="updateUserinfo" parameterType="userInfo">
+		update
+		XTEL_USERINFOTABLE set LOGINTIME=#{loginTime}
+		where USERID=#{userId}
+	</update>
+	<!-- 注册用户信息 -->
+	<insert id="insertUserInfo">
+		insert into
+		XTEL_USERINFOTABLE(USERNAME,USERID,REGISTTIME,PASSWORD)
+		values(#{name},USERINFO_SQ.NEXTVAL,#{registerTime},#{password})
+
+	</insert>
+
+
+	<!-- <resultMap type="com.cdxt.xtel.pojo.sys.Menu" id="menuFunction"> <id 
+		column="id" property="id" /> <result column="icon" property="icon" /> <result 
+		column="page_name" property="title" /> <result column="url" property="href" 
+		/> <result column="userType" property="userType" /> <association property="children" 
+		select="getMenuByParent" column="parent" javaType="com.cdxt.xtel.pojo.sys.Menu"> 
+		<id column="id" property="id" /> <result column="icon" property="icon" /> 
+		<result column="page_name" property="title" /> <result column="url" property="href" 
+		/> <result column="userType" property="userType" /> </association> </resultMap> -->
+
+	<!-- 查询菜单，递归查询 -->
+	<select id="getUserMenuList" resultType="MenuFunction">
+		select x.id ,x.parent ,x.url ,x.page_name ,x.page_order,
+		x.page_level,x.icon ,x.status ,x.usertype from
+		xtel_function x where
+		x.status='1' and x.usertype in
+		<foreach collection="array" item="type" index="index" open="("
+			close=")" separator=",">
+			#{type}
+		</foreach>
+		order by x.page_order
+	</select>
+
+	<!-- 新增用户,调用存储过程 -->
+	<select id="addUser" statementType="CALLABLE" parameterType="java.util.HashMap">
+       <![CDATA[
+           {call US246.XTEL_SIGUP(
+              #{uName,mode=IN,jdbcType=VARCHAR},
+              #{pwd,mode=IN,jdbcType=VARCHAR},
+              #{groupId,mode=IN,jdbcType=INTEGER},
+              #{userType,mode=IN,jdbcType=INTEGER},
+              #{returnValue,mode=OUT,jdbcType=INTEGER}
+           )}    
+       ]]>
+	</select>
+
+
+	<!-- 查询所有群组 -->
+	<select id="getAllGroup" resultType="java.util.HashMap">
+
+		select b.NAME,b.id FROM XTEL_GroupInfo b
+	</select>
+
+	<!-- 修改密码 -->
+	<update id="changePwd">
+		update xtel_userinfotable a set a.password=#{newPwd} where
+		a.USERID=#{userId} and a.password=#{oldPwd}
+	</update>
+	
+	
+    <!-- 分页用户信息 -->
+    <select id="getUserWithPage" resultType="map">
+        <!-- select a.roomid,a.roomname,a.capacity,a.roomstatus,a.lockstatus from 
+            ROOMINFOTABLE a order by a.roomid -->
+        select
+        a.USERID,a.USERNAME,a.GROUPID,a.REGISTTIME,a.PURCHASEDCOURSE,a.PASSCOURSE,a.EXCELLENTCOURSE,
+        a.LEARNINGCOURSE,a.COMPLETECOURSE,a.LECTURES,a.ISONLINE,a.LOGINTIME,a.PASSWORD,a.STATUS,b.NAME GROUPNAME
+        from XTEL_USERINFOTABLE a 
+        left join XTEL_GroupInfo b on a.GROUPID=b.ID
+        where 1=1
+        <if test="idVlaue!=null">
+            and a.USERID=#{idVlaue}
+        </if>
+        <if test="nameVlaue!=null and nameVlaue!=''">
+            <![CDATA[
+            AND a.USERNAME LIKE CONCAT(CONCAT('%', #{nameVlaue}), '%')
+            ]]>
+        </if>
+        order by a.USERID
+
+    </select>
+    
+    <!-- 动态更新manager -->
+    <update id="updateOnlineByUserId">
+        update xtel_userinfotable
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isOnline!=null">
+                isOnline=#{isOnline},
+            </if>
+            <if test="lastLoginTime!=null and lastLoginTime!=0">
+                logintime=#{lastLoginTime},
+            </if>
+        </trim>
+        where userid=#{id}
+    </update>
+        <!-- 更新用户状态 -->
+    <update id="updateUserStatus">
+        update xtel_userinfotable a set a.STATUS=#{status} where a.USERID=#{userId}
+    </update>
+</mapper>

@@ -1,0 +1,566 @@
+.viewFrameWork-body .body-wrapper {
+	padding: 0;
+}
+
+.viewFrameWork-body .body-wrapper .body-content {
+	padding-bottom: 80px;
+}
+
+.body-content .cont-r .tab-area .nav-tabs {
+	border-bottom: 2px solid #188DFF
+}
+
+.body-content .cont-r .tab-area .nav-tabs li {
+	width: 33%
+}
+
+.body-content .cont-r .tab-area .nav-tabs li.active {
+	margin-bottom: 0
+}
+
+.body-content .cont-r .tab-area .nav-tabs li a {
+	border: none;
+	font-size: 16px;
+	text-align: center;
+	padding: 21px 0
+}
+
+.btn-step3 {
+	padding: 13px 44px;
+	color: #fff;
+	background-color: #204d74;
+	border-color: #122b40;
+	font-size: 12px;
+	line-height: 1;
+	font-weight: 400;
+	border-radius: 4px;
+	margin-top: 28px;
+}
+
+.body-content .cont-r .tab-area .nav-tabs li.active a {
+	color: #188DFF;
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box
+	{
+	font-size: 14px;
+	color: #333333;
+	border: 1px solid #DEDEDE;
+	padding: 35px 54px;
+	margin-top: 108px;
+	border-radius: 8px;
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-bar
+	{
+	font-size: 14px;
+	color: #333333;
+	border: 1px solid #DEDEDE;
+	padding: 10px 24px;
+	margin-top: 15px;
+	border-radius: 8px;
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .blue-link
+	{
+	border: 1px solid #1A8CFE;
+	border-radius: 4px;
+	font-size: 12px;
+	padding: 6px 15px;
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box:hover,
+	.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-bar:hover
+	{
+	background: #FFFFFF;
+	box-shadow: 0 0 8px 0 rgba(47, 124, 219, 0.40);
+	border-radius: 8px;
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box h3
+	{
+	margin-left: -30px;
+	font-size: 14px;
+	margin-bottom: 20px
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box input,
+	select, .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-bar input
+	{
+	margin-right: 14px
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .ctb-row
+	{
+	margin-bottom: 18px
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .ctb-row input,
+	select {
+	border: 1px solid #D8D8D8;
+	border-radius: 4px;
+	width: 35%;
+	padding: 3px 10px;
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .ctb-row span.f-style4
+	{
+	color: red
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .ctb-row #selTypeLink
+	{
+	border: 1px solid #1A8CFE;
+	border-radius: 4px;
+	padding: 3px 15px;
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .ctb-row #selTypeLink .bulleted-list
+	{
+	float: right;
+	margin-left: 10px;
+	margin-top: 3px;
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .btn-div
+	{
+	margin-top: 28px
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .btn-div button
+	{
+	padding: 13px 44px;
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .in-hand .guide .pick-in-lib span
+	{
+	cursor: pointer
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .in-hand .guide .pick-in-lib span.lib-type1
+	{
+	padding: 6px 15px;
+	border: 1px solid #1A8CFE;
+	border-radius: 4px;
+	color: #1A8CFE;
+	margin-right: 20px;
+	font-size: 12px
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .in-hand .guide .pick-in-lib span.lib-type0
+	{
+	padding: 6px 15px;
+	border: 1px solid #999999;
+	border-radius: 4px;
+	color: #999999;
+	margin-right: 20px;
+	font-size: 12px
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .in-lib .create-test-bar
+	{
+	margin-top: 108px
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .in-lib .create-test-box
+	{
+	margin-top: 15px
+}
+
+.body-content .cont-r .tab-area .tab-content div.active .in-lib .create-test-box .btn-div a
+	{
+	padding: 13px 44px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 {
+	padding: 40px 0 0 55px;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board {
+	width: 20%;
+	float: left
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .item:hover
+	{ /*border: 1px solid #1A8CFE;*/
+	box-shadow: 0 0 10px 0 rgba(47, 124, 219, 0.30);
+	border-radius: 4px;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .item-active
+	{
+	border: 1px solid #1A8CFE !important;
+	box-shadow: 0 0 10px 0 rgba(47, 124, 219, 0.30);
+	border-radius: 4px;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .total,
+	.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .group_simple
+	{
+	width: 100%;
+	border: 1px solid #DEDEDE;
+	border-radius: 4px;
+	float: left;
+	padding: 16px 14px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .left_group_simple
+	{
+	font-size: 14px;
+	color: #333333;
+	margin-bottom: 9px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .left_group_simple h3
+	{
+	display: inline-block;
+	max-width: 100px;
+	word-wrap: break-word;
+	font-size: 14px;
+	margin: 0 0 20px 0
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .left_group_simple a
+	{
+	color: #aaa;
+	display: inline-block;
+	float: right
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .left_group_simple a:first-child
+	{
+	font-size: 17px;
+	margin-top: -2px;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .left_group_simple p
+	{
+	margin: 0;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .left_group_simple p:last-child
+	{
+	margin-top: 20px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .left_group_simple span
+	{
+	color: #1A8CFE;
+	margin: 0 10px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .left_group_simple input
+	{
+	margin: 0 10px;
+	border: 1px solid #D8D8D8;
+	border-radius: 4px;
+	width: 56px;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .info-board .total p:first-child
+	{
+	margin-bottom: 20px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board
+	{
+	width: 75%;
+	float: right;
+	margin-top: -10px;
+	padding: 0 41px 62px 0;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .emptyTip
+	{
+	text-align: center;
+	color: #999999;
+	margin: 64px 0 20px 0;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board h3
+	{
+	border-bottom: 1px solid #DEDEDE;
+	padding-bottom: 30px;
+	margin: 0;
+	color: #333333;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board h3 input
+	{
+	text-align: center;
+	width: 100%;
+	font-size: 18px;
+	color: #333;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .com-drop
+	{
+	text-align: center;
+	border-bottom: 1px solid #DEDEDE;
+	padding-bottom: 62px;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .com-drop .btn-group button
+	{
+	position: relative
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .buttonLeft
+	{
+	text-align: left;
+	margin-top: 135px;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple
+	{
+	margin-bottom: 41px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_title
+	{
+	margin: 18px 0;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple h4
+	{
+	font-size: 14px;
+	color: #333333;
+	margin-bottom: 15px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple h4 input
+	{
+	border: 1px solid #D8D8D8;
+	border-radius: 4px;
+	height: 28px;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple h4 input.disorder
+	{
+	vertical-align: bottom;
+	margin-left: 15px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple h4 .q-ipt-t-s
+	{
+	margin-left: 14px;
+	width: 30%;
+	padding: 5px 20px;
+	color: #999999
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple h4 .inline-ite
+	{
+	margin-left: 80px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple h4 .inline-ite input
+	{
+	width: 5.8%;
+	margin: 0 10px;
+	text-align: center
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .extract-box-tit .questionTypeText
+	{
+	margin-left: 34px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .extract-box-tit .extract-box-btnDiv
+	{
+	margin-top: 20px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .extract-box-tit .extract-box-btnDiv a
+	{
+	border: 1px solid #5D9CEC;
+	border-radius: 4px;
+	margin: 0px 24px
+}
+/*.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions{background: #F6F7FA;border-radius: 4px;margin-bottom: 21px;padding: 12px 0 12px 22px;position: relative;min-height:215px;font-size: 12px;color:#666666;text-align: left}*/
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions
+	{
+	background: #F6F7FA;
+	border-radius: 4px;
+	margin-bottom: 21px;
+	padding: 12px 0 12px 22px;
+	position: relative;
+	min-height: 230px;
+	font-size: 12px;
+	color: #666666;
+	text-align: left
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions dt
+	{
+	font-size: 14px;
+	color: #333333;
+	margin-bottom: 8px;
+	max-width: 50%;
+	word-wrap: break-word;
+	word-break: normal;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions dd
+	{
+	margin-bottom: 10px;
+	max-width: 50%;
+	position: relative;
+	padding-left: 20px;
+	min-height: 20px;
+}
+/*.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions p{margin:0px;}*/
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .com-questions dt
+	{
+	margin-bottom: 23px;
+	line-height: 28px;
+	font-size: 14px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .com-questions .member-question
+	{
+	font-size: 12px;
+	color: #666666;
+	padding: 0
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .com-questions .text-center
+	{
+	position: absolute;
+	right: 22%;
+	font-weight: normal;
+	color: #333333
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .answer
+	{
+	margin-bottom: 10px;
+	max-width: 50%;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .analysis
+	{
+	max-width: 50%;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .correctAnswer
+	{
+	color: #1A8CFE
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions dd em
+	{
+	font-size: 15px;
+	width: 15px;
+	height: 15px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 10px;
+	position: absolute;
+	left: 0;
+	top: 2px;
+}
+
+/*.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .m-example-score {position: absolute;  right: 22%;  top: 93px;  height: 28px;}*/
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .m-example-score
+	{
+	position: absolute;
+	right: 12px;
+	top: 13px;
+	height: 28px;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .m-example-score input
+	{
+	width: 56px;
+	border: 1px solid #D8D8D8;
+	border-radius: 4px;
+	margin-right: 10px;
+	height: 28px;
+	margin-left: 10px;
+	text-align: center
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions a
+	{
+	position: absolute;
+	right: 13px;
+	font-size: 12px;
+	color: #B7B7B7;
+	border: 1px solid #E0E2E3;
+	border-radius: 4px;
+	padding: 8px 16px;
+	background: #fff;
+	cursor: pointer
+}
+/*上传附件的a链接不需要定位*/
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .upfile
+	{
+	position: static;
+	display: inline-block;
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions a i
+	{
+	margin-right: 11px
+}
+/*.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .m-example-edit{top:20px}*/
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .m-example-remove
+	{
+	top: 50px
+}
+
+/*.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .m-example-remove{top:67px}*/
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .m-example-up
+	{
+	top: 94px
+}
+
+/*.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .m-example-up{top:115px}*/
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .m-example-down
+	{
+	top: 138px
+}
+
+/*.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .m-example-down{top:162px}*/
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions
+	{
+	top: 0px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .comb-m-example-score
+	{
+	position: absolute;
+	right: 12px;
+	top: 13px;
+	height: 28px;
+	color: #333333
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_title #selection_score input
+	{
+	height: 12px;
+	margin-left: 15px
+}
+
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions .member-score
+	{
+	border: 1px solid #D8D8D8;
+	border-radius: 4px;
+	height: 28px;
+	width: 56px;
+	margin-right: 10px;
+	font-weight: normal;
+	text-align: center
+}
+
+#group_simple, .body-content .cont-r .questionContet_simple {
+	display: none
+}
+/*英文过长时换行，英文单词不折断*/
+.body-content .cont-r .tab-area .tab-content #createTest3 .questions-board .group_main .group_simple .group_questionShow .manual-cont .questions p
+	{
+	word-wrap: break-word;
+}

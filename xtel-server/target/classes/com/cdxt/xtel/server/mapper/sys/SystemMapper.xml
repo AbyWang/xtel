@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdxt.xtel.server.mapper.sys.SystemDao">
+
+	<!-- 分页用户信息 -->
+	<select id="listSystemVersion" resultType="map">
+		select a.id,a.version,a.time,a.pcurl,a.androidurl,a.iosurl,a.releasenote,
+		a.userid,a.status  from xtel_release a order by a.time
+	</select>
+
+	<!-- 更新版本状态 -->
+	<update id="updateStatus" parameterType="map">
+		update xtel_release a set a.status=#{status}
+		<where>
+			<if test="id!=null and id!='' ">
+				a.id=#{id}
+			</if>
+		</where>
+	</update>
+</mapper>

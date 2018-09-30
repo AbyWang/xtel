@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdxt.xtel.server.mapper.lesson.ExamDao">
+
+	<!-- 查询习题库 -->
+	<select id="listExercise" parameterType="map" resultType="map">
+		SELECT a.ID,a.Type,a.UploadTime,a.Brief
+		FROM XTEL_Exercises a where
+		a.UPLOADERID=#{userID}
+		<if test="briefName != null and briefName!='' ">
+			AND a.brief like concat(concat('%',#{briefName}),'%')
+		</if>
+		order by a.uploadtime desc
+	</select>
+
+
+	<select id="getExaminationArrangementPage" parameterType="int"
+		resultType="map">
+		select
+		a.ID,a.TIME,a.COURSEID,a.PAPERID,a.STATUS,a.USERID,a.TYPE,b.PAPERNAME,c.NAME,d.USERNAME
+		from XTEL_ExamArrangement a LEFT join XTEL_ExamPapers b on
+		a.COURSEID=b.ID
+
+		left join XTEL_CourseInfo c on a.PAPERID=c.COURSEID
+		left join XTEL_userinfotable d on a.USERID=d.USERID
+		where
+		a.USERID=#{userID}
+	</select>
+
+	<!--查询成绩管理信息 -->
+	<select id="getUserPerformancePage" parameterType="int"
+		resultType="map">
+
+		select
+		a.USERID,a.PAPERID,a.EXAMID,a.LECTUREID,a.TIME,a.PERFORMANCE,a.EXAMTIME,b.PAPERNAME,c.NAME,d.USERNAME
+		from XTEL_UserPerformance a left join XTEL_ExamPapers b
+
+		on
+		a.PAPERID=b.ID left join XTEL_CourseInfo c on b.COURSEID=c.COURSEID
+		left join XTEL_USERINFOTABLE d on a.USERID=d.USERID
+
+		where
+		a.USERID=#{userID}
+
+
+	</select>
+	<!-- 新增选择题 -->
+	<insert id="insertChoiceQuestion" parameterType="choiceQuestion">
+		<selectKey keyProperty="id" resultType="Integer" order="BEFORE">
+			select CHOICEQUESTION_SEQ.NEXTVAL from dual
+		</selectKey>
+		insert into
+		XTEL_EXER_CHOICEQUESTION(ID,Stem,NumberOfOptions,Option1,Option2,Option3,Option4,Option5,Option6,ReferenceAnswer)
+		VALUES(#{id},#{stem},#{numberOfOptions},#{option1,jdbcType=VARCHAR},
+		#{option2,jdbcType=VARCHAR},#{option3,jdbcType=VARCHAR},
+		#{option4,jdbcType=VARCHAR},#{option5,jdbcType=VARCHAR},
+		#{option6,jdbcType=VARCHAR},#{referenceAnswer,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 新增问答题 -->
+	<insert id="insertEssayQuestion" parameterType="essayQuestion">
+		<selectKey keyProperty="id" resultType="Integer" order="BEFORE">
+			select ESSAYQUESTION_SEQ.NEXTVAL from dual
+		</selectKey>
+		insert into XTEL_Exer_EssayQuestion(ID,Stem) VALUES(#{id},#{stem})
+	</insert>
+
+	<!-- 新增习题 -->
+	<insert id="InsertExercises" parameterType="exercises">
+		insert into
+		XTEL_Exercises(ID,UploaderID,Type,RecordID,UploadTime,Brief)
+		VALUES(EXERCISES_SQ.NEXTVAL,#{uploaderId},#{type},#{recordId},#{uploadTime},#{brief})
+	</insert>
+
+
+	<!-- 选择题 -->
+	<select id="getChoiceQuestion" resultType="map">
+		select a.id, a.type, a.uploadtime,a.recordid,b.id
+		bid,b.stem,b.Option1,b.Option2,
+		b.Option3,b.Option4,b.Option5,b.Option6,b.REFERENCEANSWER
+		from
+		XTEL_Exercises a
+		inner join XTEL_Exer_ChoiceQuestion b on
+		a.recordid=b.id
+		<if test="userID != null and userID!='' ">
+			where a.type='0' and a.uploaderid=#{userID}
+		</if>
+		<if test="ids != null and ids!='' ">
+			and a.id in
+			<foreach item="item" index="index" collection="ids" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+	<!-- 问答题 -->
+	<select id="getEssayQuestion" parameterType="map" resultType="map">
+		select a.id ,type, uploadtime,b.id bid,b.stem,b.REFERENCEANSWER
+		from
+		XTEL_Exercises a
+		inner join XTEL_Exer_EssayQuestion b on
+		a.recordid=b.id
+		where a.type='1'
+		<if test="userID != null and userID!='' ">
+			and a.uploaderid=#{userID}
+		</if>
+		<if test="ids != null and ids!='' ">
+			and a.id in
+			<foreach item="item" index="index" collection="ids" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+	<!-- 填空题 -->
+	<select id="getFillUpQuestion" resultType="map">
+		select a.id,a.type,a.uploadtime,b.id bid,b.stem,b.REFERENCEANSWER
+		from
+		XTEL_Exercises a
+		inner join XTEL_Exer_FillupQuestion b on
+		a.recordid=b.id
+		where a.type='2'
+		<if test="userID != null and userID!='' ">
+			and a.uploaderid=#{userID}
+		</if>
+		<if test="ids != null and ids!='' ">
+			and a.id in
+			<foreach item="item" index="index" collection="ids" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<!-- 新增试卷 -->
+	<insert id="insertExamPaper" parameterType="examPaper">
+
+		<selectKey keyProperty="id" resultType="Integer" order="BEFORE">
+			select EXAMPAPERS_SQ.NEXTVAL from dual
+		</selectKey>
+		insert into
+		XTEL_ExamPapers(ID,CourseID,UploaderID,TotalScore,PaperName,UploadTime,PASSSCORE)
+		VALUES(#{id},#{courseId},#{uploaderId},#{totalScore},#{paperName},#{uploadTime},#{passScore})
+	</insert>
+
+
+
+	<!-- 学生查询考试安排 -->
+	<select id="listExamArrangeByUserId" resultType="map">
+		select a.id,a.time ,a.type,m.username ,b.id paperId,b.PaperName, c.name courseName
+		from XTEL_ExamArrangement a
+		left join Xtel_Userinfotable m on a.userId=m.userid
+		inner join XTEL_ExamPapers b on a.PaperID=b.id
+		inner join XTEL_CourseInfo c on b.courseid=c.courseid
+		inner join XTEL_SignupList p on c.courseid=p.courseid
+		where p.status=1 and p.userid=#{userId}
+	</select>
+
+	<!-- 学生查询考试安排 -->
+	<select id="listExercisesByPaperId" resultType="map">
+		select a.score,a.PaperID,b.id,b.Type,c.stem,c.Option1,c.Option2,c.option3,c.option4,c.option5,
+		c.option6,c.ReferenceAnswer
+		from XTEL_Exer2ExamPaper a join XTEL_Exercises b on a.ExerID=b.id
+		join XTEL_Exer_ChoiceQuestion c on b.RecordID=c.id
+		where b.type=0 and a.PaperID=#{paperId}
+		union all
+		select a.score,a.PaperID,b.id,b.Type,c.stem,null option1,null option2,null option3,null
+		option4,null option5,null option6,c.ReferenceAnswer from
+		XTEL_Exer2ExamPaper a join XTEL_Exercises b on a.ExerID=b.id
+		join XTEL_Exer_EssayQuestion c on b.RecordID=c.id
+		where b.type=1 and a.PaperID=#{paperId}
+		union all
+		select a.score,a.PaperID,b.id, b.Type,c.stem,null option1,null option2,null option3,null
+		option4,null option5,null option6,c.ReferenceAnswer from
+		XTEL_Exer2ExamPaper a join XTEL_Exercises b on a.ExerID=b.id
+		join XTEL_Exer_FillupQuestion c on b.RecordID=c.id
+		where b.type=2 and a.PaperID=#{paperId}
+	</select>
+
+
+
+	<!-- 查询试卷信息 -->
+	<select id="listExaminationPage" parameterType="int" resultType="map">
+		SELECT
+		a.ID,a.COURSEID,a.UPLOADERID,a.TOTALSCORE,a.PASSSCORE,a.NUMBEROFPARTICIPANTS,a.URL,a.PAPERNAME,
+		a.UPLOADTIME,b.NAME,b.TYPE
+		FROM XTEL_ExamPapers a left join
+		XTEL_CourseInfo b on
+		a.COURSEID=b.COURSEID where a.UPLOADERID=#{userID}
+		<if test="paperName!=null and paperName!='' ">
+			and a.PAPERNAME like concat(concat('%',#{paperName}),'%')
+		</if>
+	    <if test="courseId!=null and courseId!='' ">
+            and a.courseId =#{courseId}
+        </if>
+	</select>
+	
+	
+	   <!-- 新增答卷记录 -->
+    <insert id="insertExamRecord" parameterType="examRecord">
+        <selectKey keyProperty="id" resultType="Integer" order="BEFORE">
+            select ROUEPSEQ.NEXTVAL from dual
+        </selectKey>
+        insert into XTEL_RecordOfUserExamPaper(ID,UserID,ExamID,Time) 
+           VALUES
+        (#{id},#{userId},#{examId},#{time})
+    </insert>
+ <!-- 批量插入用户答题表 -->
+ <insert id="batchInsertAnswers" parameterType="java.util.List" >
+   <selectKey resultType="Integer" keyProperty="id" order="BEFORE"> 
+             SELECT USERANSWERSEQ.NEXTVAL FROM dual
+  </selectKey> 
+      INSERT INTO  XTEL_TheAnswersForExer(ID, RUEPID,USERID,ANSWER,EXERID)
+         SELECT USERANSWERSEQ.NEXTVAL, m.* FROM(
+         <foreach collection="list"  index="index" item="answers"  separator="union all">
+          select
+             #{answers.puepId,jdbcType=INTEGER} AS RUEPID,
+             #{answers.userId,jdbcType=INTEGER} AS USERID,
+             #{answers.answer,jdbcType=VARCHAR} AS ANSWER ,
+             #{answers.exerId,jdbcType=INTEGER} AS EXERID
+           from dual
+         </foreach>
+         )m
+</insert>
+
+    <!-- 新增试卷试题关联表 
+    <insert id="batchInsertExer2ExamPaper" parameterType="java.util.List"
+        useGeneratedKeys="false">
+        INSERT INTO XTEL_Exer2ExamPaper(ExerID, PaperID)
+        <foreach collection="list" index="index" item="exer2ExamPaper"
+            separator="union all">
+            ( select
+            #{exer2ExamPaper.exerId} ExerID,
+            #{exer2ExamPaper.paperId} PaperID
+            from dual
+            )
+        </foreach>
+    </insert>-->
+    <!-- 批量新增试卷试题关联表  -->
+ <insert id="batchInsertExer2ExamPaper" parameterType="java.util.List" >
+   <selectKey resultType="Integer" keyProperty="id" order="BEFORE"> 
+             SELECT E2PSEQ.NEXTVAL FROM dual
+  </selectKey> 
+      INSERT INTO  XTEL_Exer2ExamPaper(ID,ExerID, PaperID，SCORE)
+         SELECT E2PSEQ.NEXTVAL, m.* FROM(
+         <foreach collection="list"  index="index" item="exer2ExamPaper"  separator="union all">
+          select
+             #{exer2ExamPaper.exerId,jdbcType=INTEGER} AS ExerID,
+             #{exer2ExamPaper.paperId,jdbcType=INTEGER} AS PaperID,
+             #{exer2ExamPaper.score,jdbcType=VARCHAR} AS SCORE 
+           from dual
+         </foreach>
+         )m
+</insert>
+ <!-- 查询学生试卷列表 -->
+ <select id="listExamRecord" parameterType="int" resultType="map">
+  select a.id,b.paperid,b.type,b.time ,c.paperName,c.passScore,m.name courseName,p.userName from 
+  XTEL_RecordOfUserExamPaper a 
+  inner join XTEL_ExamArrangement b on a.ExamID=B.Id 
+  inner join XTEL_ExamPapers c on b.paperid=c.id
+  inner join XTEL_CourseInfo m on b.courseId=m.courseid
+  inner join Xtel_Userinfotable p on a.userid=p.userid
+  where b.userid=#{userId}
+ </select>
+    
+    
+ <!-- 查询考生详细答题信息 -->
+ <select id="getUserDetailAnswers" parameterType="int" resultType="map">
+ select a.id,b.exerid,b.answer from XTEL_RecordOfUserExamPaper a 
+ left join  XTEL_TheAnswersForExer b on a.id=b.RUEPID
+  where a.id=#{id}
+ </select>
+ 
+ 
+  <!-- 查询考生详细答题信息 -->
+ <select id="getExamPaperByCourseId" parameterType="int" resultType="map">
+    select a.id, a.TotalScore,a.PassScore,a.PaperName,a.UploadTime,b.userName from
+     XTEL_ExamPapers a  left join Xtel_Userinfotable b on 
+     a.UploaderID=b.userID
+     where a.courseId=#{courseId}
+ </select>
+ 
+  <!-- 查询考生详细答题信息 -->
+ <insert id="addExamArrange" parameterType="examArrangement" >
+  insert into XTEL_ExamArrangement(ID,CourseID,PaperID,UserID,Type,TIME)
+  VALUES(EXAMARRANGE_SQ.NEXTVAL,#{courseId},#{paperId},#{userId},#{type},#{time})
+ </insert>
+</mapper>

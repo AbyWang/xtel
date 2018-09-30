@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/aop 
+                        http://www.springframework.org/schema/aop/spring-aop.xsd
+                        http://www.springframework.org/schema/context 
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/tx 
+                        http://www.springframework.org/schema/tx/spring-tx.xsd
+    ">
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager" />
+        <property name="loginUrl" value="/toLogin" />  <!-- 登录url，登录失败后跳转 -->
+        <property name="successUrl" value="/login" /><!-- 登录成功后跳转至功能分类页面 -->
+        <property name="unauthorizedUrl" value="/toLogin" />
+        <property name="filterChainDefinitions">
+            <value>
+                /plug-in/** = anon
+                /css/** = anon
+                /images/** = anon
+                /user/checkuser = anon
+                /user/addUser = anon
+                /toSignUp=anon
+                /logout = logout
+                /**=authc
+            </value>
+        </property>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="shiroRealm" />
+    </bean>
+    
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 项目自定义的Realm -->
+    <bean id="shiroRealm" class="com.cdxt.xtel.core.interceptor.ShiroRealm">
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <!-- 加密算法 -->
+                <property name="hashAlgorithmName" value="MD5"></property>
+                <property name="hashIterations" value="1"></property>
+            </bean>
+        </property>
+    </bean>
+    
+    </beans>
+   

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdxt.xtel.server.mapper.res.LibraryDao">
+
+<!-- 查询我的文库信息分页 -->
+<select id="listMyLibraryPage"  parameterType="map" resultMap="articleMap">
+SELECT a.*,b.USERNAME
+    FROM XTEL_ArticleLibrary  a 
+    left join XTEL_USERINFOTABLE b on a.UPLOADERID=b.USERID
+    <where>
+        <if test="userID!=null and userID!='' ">
+            a.UPLOADERID=#{userID}
+        </if>
+        <if test="name !=null and name != ''">
+            AND a.NAME LIKE CONCAT(CONCAT('%', #{name}), '%')  
+        </if>
+    </where>
+   order by a.UPLOADTIME desc,a.ID
+</select>
+
+<!-- 通过id删除文章 -->
+<delete id="deleteArticleById" parameterType="int">
+    delete XTEL_ARTICLELIBRARY t where t.ID=#{id}
+</delete>
+
+<!-- 新增文章 -->
+<insert id="addArticle" parameterType="map">
+insert into XTEL_ArticleLibrary(ID,NAME,UPLOADERID,UPLOADTIME,HITS,LIKES,CONTENT)
+values(ARTICLELIBRARY_SQ.nextval,#{name},#{uploaderId},#{uploadTime},#{hits},#{likes},#{content})
+</insert>
+
+<!-- 通过id查询文章 -->
+<select id="getArticleById" parameterType="int" resultMap="articleMap">
+    select *from XTEL_ArticleLibrary t where t.ID=#{id}
+</select>
+
+<!-- 动态更新文库文章信息 -->
+<update id="updateArticle" parameterType="com.cdxt.xtel.pojo.res.ArticleLibrary">
+    update XTEL_ArticleLibrary t
+    <set>
+        <if test="name!=null and name!='' ">
+            NAME=#{name},
+        </if>
+        <if test="hits!=null and hits!='' ">
+            HITS=#{hits}
+        </if>
+        <if test="likes!=null and likes!='' ">
+            LIKES=#{likes}
+        </if>
+        <if test="content!=null and content!='' ">
+            CONTENT=#{content}
+        </if>
+    </set>
+    where t.ID=#{id}
+</update>
+
+<!-- 文库点赞表动态查询 -->
+<select id="getArticleGalRecord" parameterType="map" resultType="map">
+	select *from XTEL_ArticleGALRecord
+	<where>
+		<if test="id!=null and id!='' ">
+			ID = #{id}
+		</if> 
+		<if test="userId!=null and userId!='' ">
+			USERID = #{userId}
+		</if> 
+		<if test="articleId!=null and articleId!='' ">
+			and ARTICLEID = #{articleId}
+		</if> 
+	</where>
+</select>
+
+<!-- 通过文库文章id查询文库点赞返回实体对象 -->
+<select id="getArticleGalRecordByArticleId" parameterType="int" resultType="com.cdxt.xtel.pojo.res.ArticleGalRecord">
+	select *from XTEL_ArticleGALRecord where ARTICLEID = #{id}
+</select>
+
+<!-- 新增文库  点赞 -->
+<insert id="addArticleGalRecord">
+	insert into XTEL_ArticleGALRecord(ID,TIME,ARTICLEID,USERID)
+	values(ARTICLELIBRARY_SQ.nextval,#{time},#{articleId},#{userId})
+</insert>
+
+<!-- 通过id删除数据 取消点赞 -->
+<delete id="deleteArticleGalRecordById" parameterType="int">
+	delete XTEL_ArticleGALRecord where id=#{id}
+</delete>
+
+<!-- 统计文章点赞数 -->
+<select id="countArticleGalRecordByArticleId" parameterType="int" resultType="int">
+	select count(id) from XTEL_ArticleGALRecord where ARTICLEID=#{articleId}
+</select>
+
+<!-- 查询文库文章每天每个用户该文章的点击量 -->
+<select id="countArticleClickRecord" parameterType="map" resultType="int">
+	select count(id) from XTEL_ArticleClickRecord t 
+	where t.ARTICLEID=#{articleId}
+	and t.USERID=#{userId}
+	and TO_CHAR(t.TIME / (1000 * 60 * 60 * 24)+TO_DATE('1970-01-01 08:00:00', 'YYYY-MM-DD HH:MI:SS'), 'YYYY-MM-DD')=to_char(sysdate,'yyyy-MM-dd')
+</select>
+
+<!-- 新增阅读记录 -->
+<insert id="addArticleClickRecord" parameterType="map">
+	insert into XTEL_ArticleClickRecord(ID,TIME,ARTICLEID,USERID)
+	values(ARTICLECLICKSEQ.nextval,#{time},#{articleId},#{userId})
+</insert>
+
+<!-- 统计文章浏览量 -->
+<select id="countArticleClickRecordByArticleId" parameterType="int" resultType="int">
+	select count(id) from XTEL_ArticleClickRecord where ARTICLEID=#{articleId}
+</select>
+
+<!-- 文库实体类映射 -->
+<resultMap id="articleMap" type="com.cdxt.xtel.pojo.res.ArticleLibrary" >
+    <id column="ID" property="id" />
+    <result column="NAME" property="name"/>
+    <result column="UPLOADERID" property="uploaderId"/>
+    <result column="USERNAME" property="userName"/>
+    <result column="UPLOADTIME" property="uploadTime"/>
+    <result column="URL" property="url"/>
+    <result column="CONTENT" property="content" jdbcType="CLOB" javaType = "java.lang.String" />
+	<!--<result column="LIKES" property="likes"/> -->
+	<association property="likes" select="countArticleGalRecordByArticleId" column="ID"  javaType="int"></association>
+    <!-- <result column="HITS" property="hits"/> -->
+    <association property="hits" select="countArticleClickRecordByArticleId" column="ID"  javaType="int"></association>
+    <collection property="articleGalRecordList" ofType="com.cdxt.xtel.pojo.res.ArticleGalRecord" select="getArticleGalRecordByArticleId" column="id">
+            <id column="ID" property="id"/>
+            <result column="TIME" property="time"/>
+            <result column="ARTICLEID" property="articleId"/>
+            <result column="USERID" property="userId"/>
+  </collection>
+</resultMap>
+
+
+</mapper>

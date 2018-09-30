@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdxt.xtel.server.mapper.lesson.LessonCenterDao">
+
+ <resultMap type="com.cdxt.xtel.pojo.lesson.CourseInfo"  id="courseDetailInfo" >  
+ <id column="courseID" property="courseID"/>
+ <result column="price" property="price"/>
+ <result column="name" property="name"/>
+ <result column="totalClass" property="totalClass"/>
+ <result column="type" property="type"/>
+ <result column="brief" property="brief"/>
+ <result column="lectureid" property="lectureID"/>
+ <result column="numberOfExpected" property="numberOfExpected"/>
+ <result column="version" property="version"/>
+ <result column="sold" property="sold"/>
+ <association property="userInfo" select="getUserInfo" column="lectureid"  javaType="com.cdxt.xtel.pojo.sys.UserInfo">
+		<id property="userID" column="USERID" />
+		<result property="userName" column="USERNAME" />
+		<result property="nickName" column="NICKNAME" />
+		<result property="groupID" column="GROUPID" />
+		<result property="registTime" column="REGISTTIME" />
+		<result property="purchasedCourse" column="PURCHASEDCOURSE" />
+		<result property="passCourse" column="PASSCOURSE" />
+		<result property="excellentCourse" column="EXCELLENTCOURSE" />
+		<result property="learningCourse" column="LEARNINGCOURSE" />
+		<result property="completeCourse" column="COMPLETECOURSE" />
+		<result property="lectures" column="LECTURES" />
+		<result property="isOnline" column="ISONLINE" />
+		<result property="loginTime" column="LOGINTIME" />
+		<result property="password" column="PASSWORD" />
+		<result property="status" column="STATUS" />
+  </association>
+  <collection property="coursePlan" ofType="com.cdxt.xtel.pojo.lesson.CoursePlan">
+            <id column="id" property="id"/>
+            <result column="classnumber" property="classNumber"/>
+            <result column="time" property="time"/>
+  </collection>
+ </resultMap>
+
+<!-- 根据id查询课程信息 -->
+<select id="getCourseInfobyCpurseID" parameterType="int" resultMap="courseDetailInfo">
+
+  select a.courseID,a.Sold,a.lectureID,a.price,a.name,a.totalclass,a.type,a.brief,a.numberofexpected,
+ 
+   a.version,c.id,c.Time,c.ClassNumber from  XTEL_COURSEINFO a left join XTEL_CourseArrangement c on a.courseid=c.courseid
+   where a.COURSEID=#{cpurseID} 
+   order by c.time desc
+</select>
+
+
+<!-- 通过登录名查询XTEL_COURSEINFO -->
+<select id="listAllLesson"  parameterType="map"  resultType="map">
+            select  a.COURSEID,a.LECTUREID,a.NAME,a.STATUS,a.TOTALCLASS,a.PRICE,a.TYPE,
+    a.SOLD,a.PASS,a.LASTCLASSTIME,a.REVIEWERID,x.USERNAME,x.USERID 
+    from XTEL_COURSEINFO a left join   XTEL_USERINFOTABLE x on a.LECTUREID=x.USERID
+    where  a.STATUS=2 and x.userid!=#{userId} 
+    <!-- 剔除掉已报名的和自己的课程 -->
+   and a.courseid
+   not in( select p.courseid from XTEL_SignupList p where p.userId=#{userId})
+   <if test="courseName != null and courseName!='' " >
+         AND a.NAME like concat(concat('%',#{courseName}),'%')
+    </if>
+</select>
+
+
+  <!-- 获取录制客户端id -->
+ <select id="getUserId" statementType="CALLABLE" parameterType="java.util.HashMap" >
+    <![CDATA[
+           {call US246.GETUSERID(
+              #{USERSTRPARAM,mode=IN,jdbcType=VARCHAR},
+              #{USERID_RET,mode=OUT,jdbcType=INTEGER}
+           )}    
+       ]]>
+</select>
+
+  <!-- 从会议室中删除成员-->
+ <select id="delMemberFromRoom" statementType="CALLABLE" parameterType="java.util.HashMap" >
+    <![CDATA[
+           {call US246.DEL_MEMBER_FROM_ROOM(
+              #{ROOMID_in,mode=IN,jdbcType=INTEGER},
+              #{USERID_in,mode=IN,jdbcType=INTEGER}
+           )}    
+       ]]>
+</select>
+
+<!-- 通过登录名查询listStudentByCourseId -->
+<select id="listStudentByCourseId"  resultType="map" parameterType="Integer">
+  select a.id ,a.userid,a.time,a.status,m.username,x.name coursename,x.roomid,p.Name groupname
+   from XTEL_SignupList a left join Xtel_Courseinfo x on 
+  a.courseid=x.courseid left join xtel_userinfotable
+  m on a.userid=m.userid left join Xtel_Groupinfo p on M.Groupid=P.Id 
+  where a.courseid=#{courseId}
+  <if test="userName!=null and userName!=''">
+  		and m.username like concat(concat('%',#{userName}),'%')
+  </if>
+</select>
+
+<!-- 根据id查看课程的信息 -->
+<select id="getCourseInfoByid"  resultType="map" parameterType="int">
+ 	select  a.COURSEID,a.LECTUREID,a.NAME,a.STATUS,a.TOTALCLASS,a.PRICE,a.TYPE,
+ 	a.SOLD,a.PASS,a.LASTCLASSTIME,a.REVIEWERID,a.BRIEF,a.NUMBEROFEXPECTED,x.USERNAME,x.USERID 
+ 	from XTEL_COURSEINFO a inner join XTEL_USERINFOTABLE x on a.LECTUREID=x.USERID 
+ 	where a.COURSEID=#{cpurseID}
+</select>
+<!-- 新增培训报名信息 -->
+<insert id="insertSignup" parameterType="map">
+insert into  XTEL_SignupList(ID,USERID,COURSEID,TIME,STATUS) 
+VALUES(SIGNUP_SQ.NEXTVAL,#{userId},#{courseId},#{time},0)
+</insert>
+
+<!-- 修改课程表的出售数量
+<update id="updateSignupSold"  parameterType="map">
+
+ update XTEL_COURSEINFO set SOLD=SOLD+1,version=#{version}+1 where COURSEID=#{courseId}
+ and version=#{version}
+
+</update>
+
+-->
+<!-- 修改课程安排 -->
+<update id="updateArrangeById"  parameterType="map">
+
+update XTEL_CourseArrangement set status=#{status},updateTime=#{updateTime} where id=#{id}
+
+</update>
+
+
+<!-- 修改课程状态单条记录-->
+<update id="updateArrangeStatusById" parameterType="int">
+
+update XTEL_CourseArrangement set STATUS=#{status} where id=#{id}
+
+</update> 
+
+<!--根据id删除培训报名信息 -->
+<delete id="deleteSignupById" >
+
+delete  from XTEL_SignupList where id=#{id}
+
+</delete>
+
+<!-- 删除课程信息记录 -->
+<delete id="deleteClassInfo" parameterType="int">
+
+delete from  XTEL_COURSEINFO a where a.COURSEID=#{cpurseID}
+
+</delete>
+
+<!-- 通过登录名查询XTEL_COURSEINFO -->
+<select id="listMyLessonPage" parameterType="map" resultType="map" >
+	   	select  a.COURSEID,a.LECTUREID,a.NAME,a.STATUS,a.TOTALCLASS,a.PRICE,a.TYPE,a.NumberOfExpected,
+ 	a.SOLD,a.PASS,a.LASTCLASSTIME,a.REVIEWERID,x.USERNAME,x.USERID 
+ 	from XTEL_COURSEINFO a inner join XTEL_USERINFOTABLE x on a.LECTUREID=x.USERID
+ 	where a.LECTUREID=#{userId}
+ 	<if test="status!= null">
+ 	    and a.status=#{status}
+ 	</if>
+ 	<if test="courseName != null and courseName!='' " >
+         AND a.NAME like concat(concat('%',#{courseName}),'%')
+    </if>
+ 	order by a.status,a.courseid
+</select>
+<!-- 新增课程信息 -->
+<insert id="insertCourseInfo" parameterType="courseInfo">
+
+    <selectKey keyProperty="courseID" resultType="Integer" order="BEFORE">  
+            select COURSEINFO_SQ.NEXTVAL from dual  
+    </selectKey>
+		INSERT INTO XTEL_COURSEINFO
+		(
+		COURSEID,
+		LECTUREID,
+		NAME,
+		STATUS,
+		TOTALCLASS,
+		PRICE,
+		TYPE,
+		SOLD,
+		NUMBEROFEXPECTED,
+		BRIEF,
+		LastClassTime,
+		PASS,
+		VERSION
+		) 
+		VALUES(
+		#{courseID},
+        #{lectureID},
+		#{name},
+		#{status},
+		#{totalClass},
+		#{price},
+		#{type},
+		#{sold},
+		#{numberOfExpected},
+		#{brief},
+		#{lastClassTime},
+		#{pass},
+		#{version}
+		)
+</insert>
+<!-- 已报名课程信息 -->
+<select id="listRegisteredLessonPage" parameterType="map" resultType="map">
+   	 select  a.COURSEID,a.LECTUREID,a.NAME,a.TOTALCLASS,a.PRICE,a.TYPE,a.ROOMID,
+ 	a.SOLD,a.PASS,a.LASTCLASSTIME,a.REVIEWERID,x.USERNAME,x.USERID ,c.STATUS,a.status coursestatus
+ 	from XTEL_SignupList c left join  XTEL_COURSEINFO a on c.COURSEID=a.COURSEID 
+ 	inner join XTEL_USERINFOTABLE x on a.LECTUREID=x.USERID
+ 	where c.USERID=#{userID}
+ 	<if test="courseName != null and courseName!='' " >
+         AND a.NAME like concat(concat('%',#{courseName}),'%')
+    </if>
+    order by a.LASTCLASSTIME desc,c.id
+</select>
+<!-- 添加我的排课记录 -->
+<insert id="batchInsertCoursePlan" parameterType="java.util.List" >
+ <selectKey resultType="Integer" keyProperty="id" order="BEFORE"> 
+             SELECT COURSEARRANGEMENT_SQ.NEXTVAL FROM dual
+  </selectKey> 
+   INSERT INTO XTEL_CourseArrangement(ID, COURSEID,TIME,CLASSNUMBER,STATUS,UPDATETIME)
+         SELECT COURSEARRANGEMENT_SQ.NEXTVAL, m.* FROM(
+         <foreach collection="list"  index="index" item="coursePlan"  separator="union all">
+          select
+             #{coursePlan.courseID} as COURSEID,
+             #{coursePlan.time} as TIME,
+             #{coursePlan.classNumber} as CLASSNUMBER,
+             #{coursePlan.status} as STATUS,
+             #{coursePlan.updateTime} as UPDATETIME
+           from dual
+         </foreach>
+         )m
+</insert>
+
+<!-- 添加或更新我的排课记录 -->
+<insert id="batchMergeCoursePlan" parameterType="java.util.List">
+    <selectKey keyProperty="courseID" resultType="Integer" order="BEFORE">  
+            select COURSEINFO_SQ.NEXTVAL from dual  
+    </selectKey>
+    MERGE INTO XTEL_CourseArrangement t
+    USING (
+      <foreach collection="list" item="item" index="index" separator="union" >
+        select #{id} ,#{courseId},#{time},#{classNumber}
+        from dual
+      </foreach>) t1
+    ON (t.id =  t1.id)
+    WHEN MATCHED THEN
+    UPDATE SET t.time = t1.time ,t.status=0 where t1.id
+    WHEN NOT MATCHED THEN
+
+      INSERT(courseID, time, classNumber)
+      VALUES ( t1.courseId, t1.time, t1.classNumber)
+</insert>
+
+<!-- 查询我的课程安排信息 -->
+<select id="listCourseArrangeInfoPage" parameterType="map" resultType="map">
+
+	 select  a.COURSEID,a.LECTUREID,a.NAME COURSENAME,a.TOTALCLASS,a.TYPE,a.roomid,
+ 	a.SOLD,a.PASS,c.ID,c.TIME,c.STATUS,C.CLASSNUMBER,c.UPDATETIME
+ 	from XTEL_CourseArrangement c left join  XTEL_COURSEINFO a on c.COURSEID=a.COURSEID 
+ 	where a.status!=0 and a.LECTUREID=#{userID} 
+ 	<if test="courseName != null and courseName!='' " >
+         AND a.NAME like concat(concat('%',#{courseName}),'%')
+    </if>
+ 	order by C.TIME DESC 
+</select>
+
+<!-- 查找我的课程安排详情 -->
+<select id="getArrangeByid" resultType="map" parameterType="int">
+
+SELECT TIME,STATUS FROM  XTEL_CourseArrangement where ID=#{id}
+
+</select>
+
+<!-- 修改我的课程安排时间 -->
+<update id="updateCourseArrangementTime" parameterType="map">
+
+update XTEL_CourseArrangement set TIME=#{dateTime},STATUS=0 where ID=#{id}
+
+</update>
+<!-- 新增试卷信息 -->
+<insert id="insertExpapersInfo" parameterType="map">
+
+INSERT into XTEL_ExamPapers(ID,COURSEID,UPLOADERID,TOTALSCORE,PASSSCORE,NUMBEROFPARTICIPANTS,NUMBEROFPASS,URL,PAPERNAME,UPLOADTIME) 
+VALUES(EXAMPAPERS_SQ.NEXTVAL,#{id},#{userID},#{TOTALSCORE},#{PASSSCORE},#{NUMBEROFPARTICIPANTS},
+#{NUMBEROFPASS},#{expapersUrl},#{expapersNmae},#{uplodaTime})
+
+</insert>
+
+<!-- 修改我的课程申请,修改后需要重新审核 -->
+<update id="updateCourse" parameterType="map">
+update XTEL_CourseInfo  set name=#{name},status=1,TotalClass=#{totalClass},
+Price=#{price},type=#{type},Brief=#{brief},numberOfExpected=#{numberOfExpected}  where courseId=#{courseID}
+</update>
+
+<!-- 根据课程id删除课程计划-->
+<delete  id="deleteCourseArrangement"  parameterType="Integer">
+delete from  XTEL_CourseArrangement where CourseID=#{courseID}
+</delete>
+
+
+
+<!-- 打开会议室 -->
+<select id="unlockRoom" statementType="CALLABLE" parameterType="java.util.HashMap" >
+    <![CDATA[
+           {call US246.UNLOCK_ROOM(
+              #{ROOMID_in,mode=IN,jdbcType=INTEGER},
+              #{LOCK_TYPE,mode=IN,jdbcType=INTEGER},
+              #{RESULT_out,mode=OUT,jdbcType=INTEGER}
+           )}    
+       ]]>
+</select>
+
+  <!-- 锁定会议室 -->
+ <select id="lockRoom" statementType="CALLABLE" parameterType="java.util.HashMap" >
+    <![CDATA[
+           {call US246.LOCK_ROOM(
+              #{ROOMID_in,mode=IN,jdbcType=INTEGER},
+              #{LOCK_TYPE,mode=IN,jdbcType=INTEGER},
+              #{RESULT_out,mode=OUT,jdbcType=INTEGER}
+           )}    
+       ]]>
+</select>
+
+
+<!-- 根据课程id查询课程安排信息 -->
+<select id="getCourseArrangementeByCouorseId" resultType="map" parameterType="int">
+  select c.ClassNumber, c.ID,c.TIME from XTEL_CourseArrangement c WHERE C.STATUS=1 order by c.ClassNumber
+</select>
+
+<!-- 修改课程安排状态根据id -->
+<update id="updateCourseArrangementStatusById" parameterType="int">
+update XTEL_CourseArrangement set STATUS=#{status} where id=#{id}
+</update> 
+
+<!-- 通过id查询用户信息 -->
+<select id="getUserInfo" parameterType="int" resultType="userInfo">
+	select * from XTEL_USERINFOTABLE where USERID=#{lectureid}	
+</select>
+
+<!-- 统计该课程下未结算状态下的数量 -->
+<select id="countCourseArrangeByCourseId" resultType="int">
+	select count(a.ID) from XTEL_CourseArrangement a where a.STATUS!=4  and  a.COURSEID=#{courseId} 
+</select>
+
+<!-- 查询单个排课记录 -->
+<select id="getOneArrange" parameterType="map" resultType="map">
+	select * from XTEL_CourseArrangement 
+	<where>
+		<if test="id!=null and id!='' ">
+			id=#{id}
+		</if>
+		<if test="courseId!=null and courseId!='' ">
+			and COURSEID=#{courseId}
+		</if>
+		<if test="classNumber!=null and classNumber!='' ">
+			and CLASSNUMBER=#{classNumber}
+		</if>
+	</where>
+</select>
+<!-- 动态更新课程信息 -->
+<update id="updateCourseInfo" parameterType="map">
+	update XTEL_COURSEINFO a 
+	<set>
+		<if test="name!=null and name!='' ">
+			a.NAME=#{name},
+		</if>
+		<if test="status!=null and status!='' ">
+			a.STATUS=#{status},
+		</if>
+		<if test="lastClassTime!=null and lastClassTime!='' ">
+			a.LASTCLASSTIME=#{lastClassTime},
+		</if>
+	</set>
+	where a.COURSEID=#{courseId}
+</update>
+
+<!-- 查找我的课程延时未确认的 -->
+<select id="outTimeCourse" resultType="map">
+
+ select c.* from XTEL_UserInfotable m  join XTEL_CourseInfo p on m.userid=p.LectureID join
+ XTEL_CourseArrangement c on p.courseid=c.CourseID
+ where m.userid=#{userId}  and C.Status in (0,1,2) and time &lt;= #{deadTime}
+ <if test="id!=null and id!='' ">
+ and  c.id=#{id}
+ </if>
+</select>
+
+
+<select id="findArrangeByCourseIdMoreThanTime" parameterType="map" resultType="map">
+	select * from XTEL_CourseArrangement t
+	where t.COURSEID=#{courseId} and t.TIME>#{time}
+	order by t.TIME asc
+</select>
+</mapper>

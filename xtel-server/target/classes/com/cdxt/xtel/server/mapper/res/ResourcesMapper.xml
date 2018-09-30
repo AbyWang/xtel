@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdxt.xtel.server.mapper.res.ResourcesDao">
+
+
+<!-- 查询已报名信息课程 -->
+<select id="listLibraryPage"  resultType="map" parameterType="map">
+SELECT a.ID,a.NAME,a.UPLOADERID,a.UPLOADTIME,a.URL,a.HITS,a.LIKES,b.USERNAME FROM XTEL_ArticleLibrary  a 
+
+left join XTEL_USERINFOTABLE b on a.UPLOADERID=b.USERID
+ where 1=1
+<choose>
+        <when test="strname !=null and strname != ''">
+        
+         <![CDATA[
+            AND a.NAME LIKE CONCAT(CONCAT('%', #{strname}), '%')  
+            ]]>
+        </when>
+        <otherwise>
+            
+        </otherwise>
+    </choose>
+</select>
+
+<!-- 查询所有资料信息 -->
+<select id="listDataPage" resultType="map" parameterType="string">
+select a.ID,a.TYPE,a.UPLOADERID,a.DATASIZE,a.URL,a.DOWNLOADPRIVILEDGE,a.NAME,a.DOWNLOADS,a.COLLECTS,a.UPLOADTIME,a.COLLECTPRIVILEDGE,b.USERNAME from XTEL_LearningData a  
+left  join XTEL_userinfotable b on a.UPLOADERID=b.userid 
+where  1=1
+  <choose>
+        <when test="_parameter !=null and _parameter != ''">
+        
+         <![CDATA[
+            AND a.NAME LIKE CONCAT(CONCAT('%', #{strname}), '%')  
+            ]]>
+        </when>
+        <otherwise>
+            
+        </otherwise>
+    </choose>
+</select>
+<!-- 查询当前用户资料信息 -->
+<select id="listMydataPage" resultType="map" parameterType="map">
+select a.ID,a.TYPE,a.UPLOADERID,a.DATASIZE,a.URL,a.DOWNLOADPRIVILEDGE,a.NAME,a.DOWNLOADS,a.COLLECTS,a.UPLOADTIME,a.COLLECTPRIVILEDGE,b.USERNAME from XTEL_LearningData a  
+left  join XTEL_userinfotable b on a.UPLOADERID=b.userid 
+where  a.UPLOADERID=#{userID}
+  <choose>
+        <when test="strname !=null and strname != ''">
+        
+         <![CDATA[
+            AND a.NAME LIKE CONCAT(CONCAT('%', #{strname}), '%')  
+            ]]>
+        </when>
+        <otherwise>
+            
+        </otherwise>
+    </choose>
+</select>
+<!-- 更新资料权限 -->
+<update id="updateLearningData" parameterType="map">
+
+update  XTEL_LearningData set DOWNLOADPRIVILEDGE=#{uplodaPermissions},COLLECTPRIVILEDGE=#{collectionPermissions} where ID=#{id}
+
+</update>
+<!-- 新增资料信息 -->
+<insert id="insertLearningData" parameterType="map">
+
+insert into XTEL_LearningData(ID,TYPE,UPLOADERID,DATASIZE,URL,DOWNLOADPRIVILEDGE,NAME,DOWNLOADS,COLLECTS,UPLOADTIME,COLLECTPRIVILEDGE)
+
+values(LEARNINGDATA_SQ.nextval,#{type},#{userID},#{dataSize},#{URL},#{uplodaPermissions},#{Name},#{Downloads},#{Collects},#{UploadTime},#{collectionPermissions})
+
+</insert>
+<!-- 查找资料路径 -->
+<select id="getLearningDataByid" parameterType="int" resultType="map">
+
+select a.ID,a.TYPE,a.UPLOADERID,a.DATASIZE,a.URL,a.DOWNLOADPRIVILEDGE,a.NAME,a.DOWNLOADS,a.COLLECTS,a.UPLOADTIME,a.COLLECTPRIVILEDGE from XTEL_LearningData a  
+ where a.ID=#{id}
+</select>
+<!-- 删除资料信息 -->
+<delete id="deletedataInfo" parameterType="int">
+delete from XTEL_LearningData where ID=#{id}
+</delete>
+
+
+
+<!-- 分页课件信息 -->
+<select id="getResourcesPage"  resultType="map" parameterType="map">
+ 	SELECT x.COURSEWAREID,x.DESCRIPTION,a.NAME,a.COURSEID,t.USERNAME,t.USERID ,x.UPLOADTIME FROM XTEL_COURSEINFO  a inner join XTEL_CoursewareInfo x on a.COURSEID=x.COURSEID
+left join XTEL_USERINFOTABLE  t on x.UPLOADERID=t.USERID
+<where>
+	<if test="nameVlaue!=null and nameVlaue!='' ">
+		x.DESCRIPTION like concat(concat('%',#{nameVlaue}),'%')
+	</if>
+</where>
+</select>
+<!-- 查询课程的课件数量 -->
+<select id="findCoursewareInfoByidcount" parameterType="int" resultType="int">
+<!-- select count(*) from XTEL_COURSEINFO a  inner join XTEL_CoursewareInfo x  on  a.COURSEID=x.COURSEID
+where x.COURSEID=#{courseId} -->
+select count(*) from XTEL_CoursewareInfo x 
+where x.COURSEID=(select a.COURSEID from XTEL_CoursewareInfo a where a.COURSEWAREID=#{courseId})
+</select>
+<!-- 删除课件信息 -->
+<delete id="deleteCoursewareInfoByid" parameterType="int">
+delete XTEL_CoursewareInfo  where COURSEWAREID=#{courseId}
+</delete>
+
+
+
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdxt.xtel.server.mapper.res.DataDao">
+
+<!-- 分页课件信息 -->
+<select id="getdataPage"  resultType="map" parameterType="map">
+
+SELECT a.ID,a.NAME,x.USERNAME,x.USERID,a.UPLOADTIME,a.DOWNLOADS,a.COLLECTS,a.TYPE 
+FROM XTEL_LearningData  a inner join   
+XTEL_USERINFOTABLE  x on a.UPLOADERID=x.USERID 
+<where>
+	<if test="nameValue!=null and nameValue!='' ">
+		a.NAME like concat(concat('%',#{nameValue}),'%')
+	</if>
+</where> 
+</select>
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdxt.xtel.server.mapper.sys.GroupManageDao">
+
+	<!-- 分页群组信息 -->
+	<select id="getGroupTree" resultType="GroupInfo">
+		<!-- select a.roomid,a.roomname,a.capacity,a.roomstatus,a.lockstatus from 
+			ROOMINFOTABLE a order by a.roomid -->
+		SELECT a.ID,
+		a.NAME,
+		a.CURRENTHEAD,
+		a.MAXNUMBER,
+		a.LECTURES,
+		a.COURSEINNER,
+		a.COURSEOUTTER,
+		a.CREATETIME,
+		a.GROUPLEVEL,
+		a.SUPERIORGROUPID,
+		a.ISLEAF
+		FROM XTEL_GroupInfo a
+		<!--inner join XTEL_USERINFOTABLE x on a.MANAGER=x.USERID -->
+		where 1=1
+		<!-- <if test="idVlaue!=null"> and (a.ID=#{idVlaue} or a.MANAGER==#{idVlaue}) 
+			</if> -->
+		<choose>
+			<when test="parentId!=null and parentId!=''">
+				and a.SUPERIORGROUPID=#{parentId}
+			</when>
+			<otherwise> and a.SUPERIORGROUPID='0'
+			</otherwise>
+			</choose>
+	</select>
+	<!-- 分页群组成员信息 -->
+	<select id="getGroupRoomMemberWithPage" resultType="map"
+		parameterType="int">
+
+		select b.NAME,x.USERNAME,
+		x.ISONLINE
+		FROM XTEL_GroupInfo b inner join XTEL_USERINFOTABLE x
+		on b.id=x.GROUPID where b.id=#{roomId}
+
+	</select>
+
+   <!-- 该权限下的所有群组 -->
+	<select id="listGroupTree" resultType="groupInfo" parameterType="int">
+
+       select  * from xtel_groupinfo t start with 
+       t.superiorgroupid=#{groupId} connect by prior t.id=t.superiorgroupid 
+	
+	</select>
+
+
+
+   <!-- 该权限下的所有群组 -->
+    <insert id="addGroup" parameterType="map" >
+    
+    INSERT INTO xtel_groupinfo(id,name,SuperiorGroupID,CreateTime,isleaf)
+     
+    VALUES(SIGNUP_SQ.NEXTVAL,#{groupName},#{parentId},#{createTime},#{isLeaf})
+
+    </insert>
+    
+       <!-- 更行群组叶子状态 -->
+    <update id="updateLeafById" >
+    
+     update  xtel_groupinfo  set isLeaf=#{isLeaf} where id=#{parentId}
+
+    </update>
+    
+     <!-- 根据id删除群组 -->
+    <delete id="deleteGroupById" >
+    
+     delete  from   xtel_groupinfo   where id=#{id}
+
+    </delete>
+    
+    
+         <!-- 根据id删除群组 -->
+    <update id="updateGroupById" >
+    
+      update  xtel_groupinfo  set name=#{groupName} where id=#{id}
+
+    </update>
+</mapper>

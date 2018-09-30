@@ -1,0 +1,87 @@
+.issue-area{background: #fff;}
+.exam-setting{padding:20px 25px;}
+.exam-setting.normal-setting{border-bottom: 1px solid #F6F7FA;}
+.exam-setting.normal-setting .form-group label {width: 87px;}
+.exam-setting.normal-setting .form-group .col-sm-10 {width:calc(100% - 87px);}
+.exam-setting.toolbar-setting{padding: 20px;text-align: center;}
+.exam-setting .panel-paper .panel-body .form-row {margin-top: 39px;}
+.exam-setting .panel-paper .panel-body .form-row .title {color:#9B9B9B;}
+.exam-setting .panel-paper .panel-body .text-center {margin-top: 36px;}
+.exam-setting .panel-paper .panel-heading .paper-title {float: left;}
+.exam-setting .panel-paper .panel-heading .paper-operation {float:right;color:#1A8CFE;}
+
+.exam-setting .exam-title{
+    line-height: 28px;
+    padding-left: 15px;
+    margin-bottom: 30px;
+}
+.radio {display: inline-block;padding-top: 0;}
+.form-inline .radio + .radio{margin-left: 20px;}
+.form-control{height: 28px;padding: 3px 6px;border: 1px solid #D8D8D8; margin-bottom:10px}
+.form-control.width-62{width: 62px;display: inline-block;}
+.form-control.width-45{width: 280px;display: inline-block;}
+.form-group.answer-time{height:28px;}
+.form-group.answer-time div.radio {display: inline-block;padding-top: 0;}
+.form-group.answer-time div.radio:first-child input[type=radio]{margin-top: 7px;}
+.form-group.answer-time div.radio input{vertical-align: middle;}
+.form-group.answer-time div.radio:first-child label {width: 125px}
+.info-group .form-control{border: 1px solid #9B9B9B;}
+
+.panel-default>.panel-heading{
+    background-color: #fafafa;
+}
+.panel-body .form-row .content{
+    margin-left: 10px;
+}
+#subForm .normal-setting .col-md-6 .form-group{
+    margin-bottom: 20px;
+}
+[class|=switch]{
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 26px;
+    border-radius: 16px;
+    line-height: 32px;
+    -webkit-tap-highlight-color: rgba(255,255,255,0);
+}
+.choice-paper{
+	color:#0033ff
+}
+/**
+.slider {
+    position: absolute;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    left: 0;
+    top: 0;
+}
+
+button#saveBeat {
+    background: #1A8CFE;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+    color: #fff;
+    width: 100px;
+    line-height: 10px;
+    height: 34px;
+    border: 0;
+}
+button#cancelBeat {
+    background: #F2F2F2;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+    height: 34px;
+    width: 100px;
+    margin-right: 10px;
+    line-height: 10px;
+    border: 0;
+    color: #666;
+}
+*/
+
+
