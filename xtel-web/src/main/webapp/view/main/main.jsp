@@ -6,6 +6,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 UserInfo user=(UserInfo)session.getAttribute("userInfo");
 String userName=user.getUserName();
+Integer userType=user.getUserType();
 %>
 <!DOCTYPE html>
 <html>
@@ -34,7 +35,7 @@ String userName=user.getUserName();
                 <!-- 天气信息 -->
                <ul class="layui-nav mobileTopLevelMenus" mobile>
                     <li class="layui-nav-item" data-menu="contentManagement">
-                        <a href="javascript:;"><i class="seraph icon-caidan"></i><cite>layuiCMS</cite></a>
+                        <a href="javascript:;"><i class="seraph icon-caidan"></i></a>
                         <dl class="layui-nav-child">
                             <dd class="layui-this" data-menu="userCenter"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>用户中心</cite></a></dd>
                              <dd class="layui-this" data-menu="teachCenter"><a href="javascript:;"><i class="seraph layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>教师中心</cite></a></dd>
@@ -49,7 +50,7 @@ String userName=user.getUserName();
                      <li class="layui-nav-item" data-menu="teachCenter" pc>
                         <a href="javascript:;"><i class="seraph layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>教师中心</cite></a>
                     </li>
-                    <li class="layui-nav-item" data-menu="adminCenter" pc>
+                    <li class="layui-nav-item " data-menu="adminCenter" pc  id="adminCenter">
                         <a href="javascript:;"><i class="seraph icon-icon10" data-icon="icon-icon10"></i><cite>管理中心</cite></a>
                     </li>
                 </ul>
@@ -144,6 +145,11 @@ String userName=user.getUserName();
     <script type="text/javascript" src="view/main/js/main.js"></script>
  <!-- <script type="text/javascript" src="view/main/js/leftNav.js"></script>   -->   
     <script type="text/javascript" src="view/main/js/cache.js"></script>
-   
+   <script>
+   var userType="<%=userType%>";
+   if(userType==2){
+	   $("#adminCenter").addClass("layui-hide"); 
+   }
+   </script>
 </body>
 </html>

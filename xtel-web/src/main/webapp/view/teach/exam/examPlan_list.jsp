@@ -93,9 +93,9 @@ listAllLesson.initColumn= function () {
          {title: '考试方式',field: 'TYPE', align: 'center', valign: 'middle',
          	formatter: function (value, row, index) {
                 if(value==0){
-                	return "统一考试";
+                	return "在线自考";         	
                   }else{
-                    return "在线自考";
+                	  return "统一考试";
                   }     	  
             }},
              {title: '操作', align: 'center', valign: 'middle', formatter: 

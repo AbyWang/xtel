@@ -12,20 +12,17 @@ String userName=user.getUserName();
 <head>
 <meta name="viewport" content="width=device-width" />
 <base href="<%=basePath%>">
-<title>课程报名</title>
+<title>已报名课程</title>
 <!-- Jquery组件引用 -->
-
 
 <link href="plug-in/layui/css/layui.css" rel="stylesheet">
 <link href="plug-in/bootstrap3.3.5/css/bootstrap.min.css" rel="stylesheet">
-
 <script src="plug-in/jquery/jquery-1.9.1.js"></script>
 <script src="plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
 <!-- bootstrap table组件以及中文包的引用 -->
 <link href="plug-in/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
 <script src="plug-in/bootstrap-table/bootstrap-table.js"></script>
 <script src="plug-in/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-
 <!-- Layer组件引用 -->
 <script type="text/javascript" src="plug-in/layui/layui.js"></script>  
 
@@ -145,7 +142,7 @@ function startClass(index){
             time: 2000 //2秒关闭（如果不配置，默认是3秒）
           });   
     }else{
-        window.location.href="Talker5Protocol:"+roomId+'+'+userName+'+'+roomId+"+2";
+    	window.location.href="Talker5Protocol:"+roomId+'+'+userName+'+'+roomId+"+2"+"+"+courseName;
     }
 }
 //查询

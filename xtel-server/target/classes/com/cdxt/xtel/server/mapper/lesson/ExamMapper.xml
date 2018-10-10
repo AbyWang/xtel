@@ -18,12 +18,11 @@
 	<select id="getExaminationArrangementPage" parameterType="int"
 		resultType="map">
 		select
-		a.ID,a.TIME,a.COURSEID,a.PAPERID,a.STATUS,a.USERID,a.TYPE,b.PAPERNAME,c.NAME,d.USERNAME
-		from XTEL_ExamArrangement a LEFT join XTEL_ExamPapers b on
-		a.COURSEID=b.ID
-
-		left join XTEL_CourseInfo c on a.PAPERID=c.COURSEID
-		left join XTEL_userinfotable d on a.USERID=d.USERID
+		a.ID,a.TIME,a.COURSEID,a.PAPERID,a.STATUS,a.USERID,a.TYPE,b.PAPERNAME,c.NAME COURSENAME,d.USERNAME
+		from XTEL_ExamArrangement a inner join XTEL_ExamPapers b on
+        a.PaperID=b.ID
+        inner join XTEL_CourseInfo c on a.courseid=c.COURSEID
+        inner join XTEL_userinfotable d on a.USERID=d.USERID
 		where
 		a.USERID=#{userID}
 	</select>
@@ -31,18 +30,14 @@
 	<!--查询成绩管理信息 -->
 	<select id="getUserPerformancePage" parameterType="int"
 		resultType="map">
-
 		select
 		a.USERID,a.PAPERID,a.EXAMID,a.LECTUREID,a.TIME,a.PERFORMANCE,a.EXAMTIME,b.PAPERNAME,c.NAME,d.USERNAME
 		from XTEL_UserPerformance a left join XTEL_ExamPapers b
-
 		on
 		a.PAPERID=b.ID left join XTEL_CourseInfo c on b.COURSEID=c.COURSEID
 		left join XTEL_USERINFOTABLE d on a.USERID=d.USERID
-
 		where
 		a.USERID=#{userID}
-
 
 	</select>
 	<!-- 新增选择题 -->
@@ -255,7 +250,7 @@
 </insert>
  <!-- 查询学生试卷列表 -->
  <select id="listExamRecord" parameterType="int" resultType="map">
-  select a.id,b.paperid,b.type,b.time ,c.paperName,c.passScore,m.name courseName,p.userName from 
+  select a.id,a.examId,b.paperid,b.type,b.time ,c.paperName,c.passScore,m.name courseName,p.userName from 
   XTEL_RecordOfUserExamPaper a 
   inner join XTEL_ExamArrangement b on a.ExamID=B.Id 
   inner join XTEL_ExamPapers c on b.paperid=c.id

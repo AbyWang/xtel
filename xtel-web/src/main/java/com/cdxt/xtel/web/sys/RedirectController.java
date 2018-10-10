@@ -401,5 +401,85 @@ public class RedirectController {
 		return "user/exam/examArrange_list";
 	}
 	
+	@RequestMapping(value ="/gotoDataPage")
+	public String gotoDataPage(){
+		return "admin/res/data_list";
+	}
+	
+	@RequestMapping("/gotoExercisesList")
+	public String gotoExercisesList(){
+		
+		return "kfz";
+	}
+	
+	@RequestMapping("/gotoResourcesPage")
+	public String gotoResourcesPage(){
+		
+		return "kfz";
+	}
+	
+	@RequestMapping("/gotoLibraryPage")
+	public String gotoLibraryPage(){
+		
+		return "kfz";
+	}
+
+	
+	@RequestMapping("/gotoAtlasPage")
+	public String gotoAtlasPage(){
+		
+		return "kfz";
+	}
+	
+	
+	@RequestMapping("/gotoLecturerPage")
+	public String gotoLecturerPage(){
+		
+		return "kfz";
+	}
+	
+	@RequestMapping("/gotoUserSituationPage")
+	public String gotoUserSituationPage(){
+		
+		return "kfz";
+	}
+	
+	@RequestMapping("/gotoResourceStatisticsPage")
+	public String gotoResourceStatisticsPage(){
+		
+		return "kfz";
+	}
+	
+	@RequestMapping("/gotoCourseStatisticsPage")
+	public String gotoCourseStatisticsPage(){
+		
+		return "kfz";
+	}
+	
+	@RequestMapping("/gotoExamStatisticsPage")
+	public String gotoExamStatisticsPage(){
+		
+		return "kfz";
+	}
+	
+	@RequestMapping("/gotoTestManagerPage")
+	public String gotoTestManagerPage(){
+		
+		return "kfz";
+	}
+	
+	
+	@RequestMapping("/gotoExamPaperManagerPage")
+	public String gotoExamPaperManagerPage(){
+		
+		return "kfz";
+	}
+	
+	@RequestMapping("/gotoPerformanceManagementPage")
+	public String gotoPerformanceManagementPage(){
+		
+		return "kfz";
+	}
+	
 	
 }

@@ -89,7 +89,7 @@ $(function () {
 });
 function loadTable(flag){
 	var defaultColunms = dataList.initColumn();
-    var table = new BSTable("dataList",path+"/getDataPage", defaultColunms);
+    var table = new BSTable("dataList",path+"/dataController/getDataPage", defaultColunms);
     table.init();
     if(flag==1){
         table.refresh();

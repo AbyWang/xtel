@@ -16,15 +16,13 @@ import com.cdxt.xtel.core.model.PagePojo;
 import com.cdxt.xtel.core.utils.PageUtil;
 
 @Controller
+@RequestMapping("/dataController")
 public class DataController {
 	
 	@Reference
 	private DataService dataService;
 	
-	@RequestMapping(value ="/gotoDataPage")
-	public String gotoDataPage(){
-		return "res/data_list";
-	}
+
 	
 	/**
 	 * 

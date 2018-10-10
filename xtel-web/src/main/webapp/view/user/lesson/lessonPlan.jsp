@@ -24,10 +24,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="js/bootstrap-curdtools.js"></script>
 
 </head>
-
 <body>
-
-        <div class="panel-body" style="padding-bottom:0px;">
+       <div class="panel-body" style="padding-bottom:0px;">
         <!-- 搜索 -->
 		<div class="accordion-group">
 			<div id="collapse_search" class="accordion-body collapse">
@@ -100,14 +98,14 @@ userInfo.initColumn = function () {
                       }else{
                     	return "审核通过"; 
                       }
-                }},
+             }},
         {title: '开课时间', field: 'TIME', align: 'center', valign: 'middle', sortable: true},
         {title: '操作', align: 'center', valign: 'middle', formatter: 
         	function (value, row, index) {
             return ['<button class="btn btn-xs btn-info" onclick="arrangeclassClick()"" style="margin-right:15px;">修改</button>',
                   '<button class="btn btn-xs btn-info" style="margin-right:15px;">试卷</button>'
               ].join('');
-        }}
+          }}
         ];};
 </script>
 </body>

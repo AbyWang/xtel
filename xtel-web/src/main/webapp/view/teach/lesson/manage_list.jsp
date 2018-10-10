@@ -190,7 +190,6 @@ listCourseArrange.initColumn= function () {
           url : "lessonCenterController/startClass",// 请求的action路径
           data : {id:id,roomId:roomId,courseId:courseId,id:id},
           success : function(data) {
-              console.log(data);
                   if(data.code=="1"){
                       window.location.href="Talker5Protocol:"+roomId+'+'+userName+'+'+roomId+"+2"+"+"+courseName;
                   }else{
@@ -274,8 +273,7 @@ listCourseArrange.initColumn= function () {
               value:new Date(time)
             });
         })
-       }
-  
+      }
   
      function updateArrageById(){
            var id=$("#id").val();

@@ -82,7 +82,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                                   </div>
                                                 <div class="radio">   
                                                     <label>
-                                                        <input type="radio" name="type" value="1" /> 其他方式
+                                                        <input type="radio" name="type" value="1" /> 统一考试
                                                     </label>
                                                     </div>
                                             </div>
@@ -190,6 +190,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <script src="<%=path%>/plug-in/jquery/jquery-1.9.1.js"></script>
   <script src="<%=path%>/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=path%>/plug-in/layui/layui.js"></script>
+<script type="text/javascript" src="<%=path%>/js/DateFormat.js"></script>
 <script>
 var layer;
 layui.use(['form','layer','laydate'],function(){
@@ -208,19 +209,19 @@ function choice_paper(){
 		layer.msg("请先选择课程",{icon:2});
 		return false;
 	}
-	$('#myModal').modal('show');
+
 	  $.ajax({
           url: '<%=path%>/examController/getExamPaperByCourseId',
           data: {courseId:courseId},
           dataType: 'json',
           success: function(data) {
-        	  console.log(data);
         	  if(data.code == "1"){ //查询数据成功
         		  rdata=data.data;
         	     if(rdata.length==0){
         	         layer.msg("该课程下暂无试卷，请先添加",{icon:2});
         	         return false;
         	     }
+        	     $('#myModal').modal('show');
         	     var data_len = rdata.length;
         	     op="";
         	     for(var i = 0;i < data_len; i++){
@@ -249,14 +250,13 @@ function btnSumit(){
     $("#totalScore").text(totalScore);
     $("#passScore").text(passScore);
     $("#userName").text(userName);
-    $("#uploadTime").text(uploadTime);
+    $("#uploadTime").text(changeDateFormat(uploadTime));
     $('#paperId').val(paperId);
     $('#myModal').modal('hide');
     
 }
 
 function addExamArrange(){
-	console.log(1234);
 	if(checkForm_Arrange()) {
         asyncPaperArrange();
     }
@@ -289,9 +289,16 @@ function asyncPaperArrange(){
         	time:time,
         	paperId:paperId,
         	type:type},
-        dataType: 'json',
-        success: function(data) {
-        	console.log(data);
+            dataType: 'json',
+            success: function(data) {
+               layer.msg(data.message, {
+                icon: data.code,
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                }, function(){
+                     if(data.code=="1"){
+                    	 window.location.href="<%=path%>/gotoExamPlanList";
+                     }
+               });   
         }
     })
 	

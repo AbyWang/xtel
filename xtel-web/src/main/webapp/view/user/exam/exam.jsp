@@ -150,6 +150,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      // 交卷
 	function handOver(){
         var answers="";
+        
 	    $("div .test_content_nr").each(function (index, element) {
 	        var commit_li = $(this).find(".m-example");
 	        var exerId= commit_li[0].getAttribute("questionid");
@@ -160,6 +161,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        }); 
 	        var keyValue=exerId+"@"+checkValue;
 	        answers+=keyValue+",";
+	        
 	    }); 
 
            //保存
@@ -177,13 +179,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                        icon: data.code,
                      }, function(){
                            if(data.code=="1"){
-                                
+                        	   window.location.href="<%=path%>/gotoExamArrangeList"; 
                            }
                      });   
-               })
+                 })
                }
 	       })
 	    }
+	    
 </script>
 </body>
 </html>

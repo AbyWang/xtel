@@ -72,62 +72,34 @@ $(function () {
     //保存
     $("#saveCheckResultsBtn").click(function () {
         if(checkResultsForm()){
-            var questionInfoList=[];
             var dataJson = {};
-
-            $(".operation-check .question-score").each(function (index, element) {
-                var _this = $(this);
-                var _parent = $(_this).parents(".question-content");
-                var _checkDom = $(_this).parents(".operation-check").find(".icon-checked");
-                var questionId = $(_parent).attr("data-id");
-                var score = $(_this).val();
-                var mix = $(_parent).hasClass("question-insert") ? 1 : 0;
-                var combId = $(_parent).hasClass("question-insert") ? $(_parent).attr("data-comb-id") : '';
-                var error = '';
-
-                if(_checkDom.length>0){
-                    if($(_checkDom).hasClass("icon-right")){
-                        error = 'right';
-                    }else {
-                        error = 'error';
-                    }
-                }
-
-                questionInfoList[index]= {
-                    "id":questionId,
-                    "score": score,
-                    "isOk": error,
-                    "mix": mix,
-                    "combId": combId
-                }
-            });
-
+        	var examId = '<%=request.getAttribute("examId")%>' ;
+        	var paperId = '<%=request.getAttribute("paperId")%>' ;
             dataJson = {
-                "examInfoId": exam_info_id,
-                "examResultsId": exam_results_id,
-                "userName": checkUserName,
-                "questionInfoList": JSON.stringify(questionInfoList)
+                "performance": $("#examScore").text(),
+                "examId": examId,
+                "paperId":paperId
             };
-
             $.ajax({
                 type: "POST",
                 cache : false,
                 headers: { "cache-control": "no-cache" },
                 dataType: "json",
-                url: "/exam/manmade_exam_ending",
+                url:path+ "/examController/saveUserPerformance",
                 data: dataJson,
                 success: function(msg){
-                    if(msg.success){
-                        //判断是否生成证书
-                        if(msg.bizContent.isGrantCertificate){
-                            certificateType(msg.bizContent.pollType);
-                        }else{
-                            alert("保存成功");
-                        }
-                    }else{
-                        alert("操作失败，请联系管理员！");
-                    }
-                }
+                 layui.use('layer',function(){
+            	   layer=layui.layer;
+                	layer.msg(data.message, {
+                        icon: data.code,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                             if(data.code=="1"){
+                            	 window.location.href="<%=path%>/gotoExamPlanList";
+                             }
+                       });   
+                })
+                }               
             });
 
         }
@@ -141,62 +113,15 @@ $(function () {
         $(".operation-check .question-score").each(function (index, element) {
             if(!reg.test($(this).val())){
                 status = false;
-                alert("分数需为非负数，否则作0分处�?");
+                alert("分数需为非负数，否则作0分处理?");
                 return false;
             }
         });
         return status;
     }
 
-    //判断出什么类型的证书
-    function certificateType(pollType){
-        var tipTitle = '';
-        var btnTitle = '';
 
-        switch (pollType){
-            case 'add':
-                tipTitle = '分数已保存，考生分数已符合证书发放规则，是否要发放证书？';
-                btnTitle = '发放';
-                break;
-            case 'del':
-                tipTitle = '分数已保存，考生分数不符合证书发放规则，是否要收回证�?? ';
-                btnTitle = '收回';
-                break;
-            case 'update':
-                tipTitle = '分数已保存，需要更新考生证书，是否立即更新？';
-                btnTitle = '更新';
-                break;
-            default:
-                window.location.reload();
-                return true;
-        }
-
-        $("#certificateModal .modal-body .modal-title").html(tipTitle);
-        $("#certificateBtn").text(btnTitle).attr("data-type", pollType);
-        $("#certificateModal").modal();
-    }
-
-    //证书点击发放／收回／更新�?
-    $("#certificateBtn").click(function(){
-        var pollType = $(this).attr("data-type");
-
-        $.ajax({
-            type: "POST",
-            cache : false,
-            headers: { "cache-control": "no-cache" },
-            dataType: "json",
-            url: "/exam/exam_grant_certificate",
-            data: {
-                "examInfoId":exam_info_id,
-                "examResultsId":exam_results_id,
-                "pollType": pollType
-            },
-            success: function(msg){
-                $("#certificateModal").modal('hide');
-            }
-        });
-    });
-
+   
 
     //*******************************手动判分**********************************
 });

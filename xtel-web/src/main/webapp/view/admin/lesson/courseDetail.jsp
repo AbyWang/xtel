@@ -1,4 +1,3 @@
-<%@page import="com.cdxt.dl.web.sys.pojo.UserInfo"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -96,7 +95,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
 				<span >课程简介:</span></br>
 				     <textarea class="form-control"  rows="3" name="brief" readonly="readonly">${courseInfo.brief}</textarea>
-				</div>
+			</div>
 		</div>
 		<hr color="#e1e5eb">
 		<div class="row">
@@ -119,11 +118,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		<hr color="#eaeced">
 	</div>
-     <!-- Jquery组件引用 -->
-     <script type="text/javascript" src="plug-in/jquery/jquery-1.9.1.js"></script>
-      <!-- Validform组件引用 -->
-     <script type="text/javascript" src="plug-in/Validform/Validform_v5.3.2.js"></script> 
-      <script type="text/javascript" src="plug-in/layui/layui.js"></script>   
+    <!-- Jquery组件引用 -->
+    <script type="text/javascript" src="plug-in/jquery/jquery-1.9.1.js"></script>
+    <!-- Validform组件引用 -->
+    <script type="text/javascript" src="plug-in/Validform/Validform_v5.3.2.js"></script> 
+    <script type="text/javascript" src="plug-in/layui/layui.js"></script>   
 
 </body>
 </html>

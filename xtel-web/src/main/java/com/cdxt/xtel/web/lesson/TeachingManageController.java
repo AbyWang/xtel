@@ -44,7 +44,7 @@ public class TeachingManageController {
 	public String getoCourseDetail(HttpServletRequest request,@Param(value="courseId")Integer courseId){
 		CourseInfo courseInfo=teachingManageService.getCourseInfoByid(courseId);
 		request.setAttribute("courseInfo", courseInfo);
-		return "admin/teach/courseDetail";
+		return "admin/lesson/courseDetail";
 	}
 
 	/**

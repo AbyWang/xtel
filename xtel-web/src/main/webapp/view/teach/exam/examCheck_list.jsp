@@ -60,9 +60,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
        <div id="toolbar">
-           <a  id="btn_add" type="button" class="btn btn-primary btn-sm"  href="examController/gotoAddExamPlan">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
-           </a>
          <a class="btn btn-default btn-sm" data-toggle="collapse" href="#collapse_search" id="btn_collapse_search" >
                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 检索 </a>
         </div>
@@ -86,6 +83,7 @@ var data=[];
 listAllLesson.initColumn= function () {
     return [
         {title: '答卷id',field:'ID', align: 'center', valign: 'middle'},
+        {title: '安排ID',field:'EXAMID', align: 'center', valign: 'middle'},
         {title: '试卷id',field:'PAPERID', align: 'center', valign: 'middle'},
         {title: '课程名称',field:'COURSENAME', align: 'center', valign: 'middle'},
         {title: '考试名称',field:'PAPERNAME', align: 'center', valign: 'middle'},
@@ -107,7 +105,7 @@ listAllLesson.initColumn= function () {
             }},
           {title: '操作', align: 'center', valign: 'middle', formatter: 
        		       function (value, row, index) {
-                         return   ' <a  type="button" class="btn btn-primary btn-xs"  href="examController/gotoCheckExam?id='+row.ID+'&paperId='+row.PAPERID+'&passScore='+row.PASSSCORE+'"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span>阅卷</button>';
+                         return   ' <a  type="button" class="btn btn-primary btn-xs"  href="examController/gotoCheckExam?id='+row.ID+'&paperId='+row.PAPERID+'&passScore='+row.PASSSCORE+'&examId='+row.EXAMID+'"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span>阅卷</button>';
           }}]  };
   </script>
 </body>

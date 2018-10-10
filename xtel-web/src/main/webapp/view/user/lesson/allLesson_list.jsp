@@ -24,7 +24,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
 <script src="plug-in/layui/layui.js"></script>
 <script src="js/bootstrap-curdtools.js"></script>
-
 </head>
 
 <body>

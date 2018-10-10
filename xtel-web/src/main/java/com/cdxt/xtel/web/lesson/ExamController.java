@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import com.cdxt.xtel.pojo.lesson.EssayQuestion;
 import com.cdxt.xtel.pojo.lesson.ExamArrangement;
 import com.cdxt.xtel.pojo.lesson.ExamPaper;
 import com.cdxt.xtel.pojo.lesson.Exercises;
+import com.cdxt.xtel.pojo.lesson.UserPerformance;
 import com.cdxt.xtel.pojo.sys.UserInfo;
 import com.sun.istack.internal.logging.Logger;
 
@@ -114,7 +116,6 @@ public class ExamController {
 		UserInfo userinfo=(UserInfo) request.getSession().getAttribute("userInfo");
 		int userID = userinfo.getUserId();
 		return examService.getExaminationArrangementPage(userID,pageNo,pageSize);
-
 	}
 
 
@@ -252,10 +253,11 @@ public class ExamController {
 	 */
 	@RequestMapping("/gotoCheckExam")
 	public ModelAndView gotoCheckExam(HttpServletRequest request,@Param("paperId")Integer paperId,
-			@Param("id")Integer id,@Param("passScore")Integer passScore){
+			@Param("id")Integer id,@Param("passScore")Integer passScore,@Param("examId")Integer examId){
         request.setAttribute("paperId", paperId);
         request.setAttribute("id", id);
         request.setAttribute("passScore", passScore);
+        request.setAttribute("examId", examId);
 		return new ModelAndView("teach/exam/exam_check");
 	}
 
@@ -403,5 +405,25 @@ public class ExamController {
 			return new ResJson(SysConstants.STRING_TWO,"保存失败");
 		}
 	}
-	
+	/**
+	 * 
+	 * @Title: saveUserPerformance
+	 * @author wangxiaolong
+	 * @Description:
+	 * @param
+	 * @return
+	 */
+	@RequestMapping("/saveUserPerformance")
+	@ResponseBody
+	public ResJson saveUserPerformance(HttpSession session,UserPerformance userPerformance){
+		try{
+			UserInfo userInfo=(UserInfo) session.getAttribute(SysConstants.SYS_USER);
+			userPerformance.setUserId(userInfo.getUserId());
+			examService.saveUserPerformance(userPerformance);
+			return new ResJson(SysConstants.STRING_ONE,"保存成功");
+		}catch(Exception e){
+			logger.info(e.getMessage(),e);
+			return new ResJson(SysConstants.STRING_TWO,"保存失败");
+		}		
+	}
 }

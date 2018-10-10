@@ -87,10 +87,10 @@ public class UserController {
 			json.setSuccess(false);
 			json.setMsg("用户已锁定,请联系管理员");
 			return json;
-		} catch (AuthenticationException e) {
+		} catch (Exception e) {
 			// 其他错误，比如锁定，如果想单独处理请单独catch处理
 			json.setSuccess(false);
-			json.setMsg("其他错误：" + e.getMessage());
+			json.setMsg("系统异常,请联系管理员");
 			return json;
 		}
 

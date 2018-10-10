@@ -22,7 +22,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	href="<%=path%>/css/exam/style.css?v=931dbfbf4c57">
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>/css/exam/base.css?v=9f5c566a0857">
-
 <link rel="stylesheet" type="text/css"
 	href="<%=path%>/css/exam/exam_style.css?v=0d98557bbc57">
 
@@ -43,15 +42,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		<div class="body-wrapper">
 			<div class="body paper">
-
 		        <div class="questions" id="list-exercises">
 		
-		           </div>
+		        </div>
 			</div>
 			<div class="nav-wrapper nav-wrapper-l">
 				<div class="nav nav-status">
 					<ul class="menu-items">
 						<li class="menu-item menu-item-user">
+						     <input type="hidden" id="examId"/>
 							<div class="item-label">考生姓名</div>
 							<div class="item-data" id="userName"></div>
 						</li>
@@ -95,7 +94,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 					<div class="modal-body" id="card-content">
 						<div class="title">答题卡</div>
-
 					</div>
 					<div class="modal-footer">
 						<span class="box icon-box s2"></span> <span class="icon-label">正确</span>
@@ -113,6 +111,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        var layer;
        var passScore;
        var passScore;
+       var path='<%=path%>';
        $(function () {
     	   passScore  = '<%=request.getAttribute("passScore")%>' ;
     	   layui.use('layer', function(){
@@ -231,7 +230,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     if(choiceCard==""){
                     	choiceCard=' <div class="card-content" > <div class="card-content-title">单选题</div><div class="split"></div>  <div class="box-list">'
                     }
-                    choiceCard+=' <div class="box normal-box s4"><a href="#'+obj.ID+'" class="iconBox questions_'+obj.ID+'"  id="card_'+obj.ID+'">'+choiceNum+'</a> </div>';
+                    choiceCard+=' <div class="box normal-box s4"><a href="#question-content-'+obj.ID+'" class="iconBox questions_'+obj.ID+'"  id="card_'+obj.ID+'">'+choiceNum+'</a> </div>';
        
                     choiceNum++;
                 }
@@ -266,7 +265,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	for(var j = 0; j < len; j++ ) {
                 		var answers=rdata[j].ANSWER;
                         var exerId=rdata[j].EXERID;
-                      
+                       
                 		var array=answers.split("#");
                 		
                 		var user_answer=answers.replace(/#/g," ");
